@@ -134,17 +134,19 @@
         .lb-fc-weightage { font-size: 10px; color: #5B8DC9; margin-top: 3px; background: #EAF2FA; padding: 2px 7px; border-radius: 3px; display: inline-block; font-weight: 600; }
         .lb-fc-code { font-size: 10px; font-weight: 700; color: white; background: #5B8DC9; padding: 4px 9px; border-radius: 5px; flex-shrink: 0; }
 
-        /* ============ EXAM INTERFACE (Match Pic 1) ============ */
+        /* ============ EXAM INTERFACE ============ */
         .exam-interface { display: none; min-height: 100vh; background: #F0F4F8; padding: 0; }
 
+        /* TOP BAR — light blue gradient with dark blue text */
         .exam-top-bar {
-            background: linear-gradient(to bottom, #2C3E50, #1B2838);
-            color: white; display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 24px; border-bottom: 1px solid #0F1A26;
+            background: linear-gradient(to bottom, #DCE9F5, #B8D2EA);
+            color: #1B3A6B;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 24px; border-bottom: 1px solid #9AB8D6;
         }
-        .exam-top-subject { color: #2ECC71; font-size: 17px; font-weight: 700; }
-        .exam-top-title { color: #E74C3C; font-size: 14px; font-weight: 700; }
-        .exam-top-student { color: #5DADE2; font-size: 14px; font-weight: 700; }
+        .exam-top-subject { color: #1B3A6B; font-size: 17px; font-weight: 800; letter-spacing: 0.4px; }
+        .exam-top-title { color: #1B3A6B; font-size: 14px; font-weight: 700; }
+        .exam-top-student { color: #1B3A6B; font-size: 14px; font-weight: 700; }
 
         .exam-sub-bar {
             background: #FFFFFF; display: flex; justify-content: space-between; align-items: center;
@@ -234,20 +236,36 @@
         }
         .exam-photo-id span { color: #E74C3C; }
 
-        /* Navigation Grid */
+        /* ============ SUBJECT TABS + Navigation Grid ============ */
+        .subject-tabs-bar {
+            margin: 0 20px 8px 20px; display: flex; gap: 4px; flex-wrap: wrap;
+        }
+        .subject-tab {
+            background: #ECF0F4; color: #2C3E50; font-weight: 700; font-size: 11px;
+            padding: 7px 16px; border: 1px solid #BDC3C7; border-bottom: none;
+            border-radius: 6px 6px 0 0; cursor: pointer; text-transform: uppercase;
+            transition: all 0.15s; letter-spacing: 0.3px;
+        }
+        .subject-tab:hover { background: #D6E0EB; }
+        .subject-tab.active {
+            background: #5B8DC9; color: white; border-color: #5B8DC9;
+        }
+        .subject-tab .tab-count {
+            font-size: 10px; opacity: 0.85; margin-left: 4px;
+        }
+
         .navigation-grid-wrapper {
-            background: #FFFFFF; border: 1px solid #D5DBE0; border-radius: 6px;
-            margin: 0 20px 12px 20px; padding: 10px;
+            background: #FFFFFF; border: 1px solid #D5DBE0; border-radius: 0 6px 6px 6px;
+            margin: 0 20px 12px 20px; padding: 12px;
         }
-        .nav-section-label { display: flex; align-items: center; gap: 8px; margin: 4px 0 6px 0; }
-        .nav-section-label span {
-            font-size: 10.5px; font-weight: 700; color: white; background: #5B8DC9;
-            padding: 3px 10px; border-radius: 3px; text-transform: uppercase;
+        .nav-section-title {
+            font-size: 12px; font-weight: 700; color: #5B8DC9; text-transform: uppercase;
+            margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #E5EAF0;
         }
-        .nav-sub-grid { display: grid; gap: 3px; margin-bottom: 8px; }
+        .nav-sub-grid { display: grid; gap: 4px; }
         .nav-square-btn {
             background: #ECF0F4; border: 1px solid #BDC3C7; text-align: center;
-            font-size: 10.5px; padding: 5px 0; cursor: pointer; font-weight: 700;
+            font-size: 10.5px; padding: 6px 0; cursor: pointer; font-weight: 700;
             color: #2C3E50; border-radius: 3px; transition: all 0.15s;
         }
         .nav-square-btn:hover { background: #D6E0EB; }
@@ -270,9 +288,9 @@
         }
         .exam-timer-mins {
             background: #FFFFFF; padding: 6px 16px; border-radius: 6px; text-align: center;
-            border: 1px solid #D5DBE0;
+            border: 1px solid #D5DBE0; min-width: 110px;
         }
-        .exam-timer-mins .big-num { font-size: 24px; font-weight: 800; color: #27AE60; font-family: monospace; line-height: 1; }
+        .exam-timer-mins .big-num { font-size: 22px; font-weight: 800; color: #27AE60; font-family: monospace; line-height: 1.1; }
         .exam-timer-mins .small { font-size: 9px; color: #7F8C8D; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .exam-timer-clock-icon {
             background: #5B8DC9; color: white; width: 36px; height: 36px; border-radius: 50%;
@@ -467,6 +485,7 @@
             <li>Click on any option to <strong>select your answer</strong>.</li>
             <li>Press <strong>Save</strong> to record your answer and advance.</li>
             <li>Use <strong>Next</strong> / <strong>Prev</strong> to navigate.</li>
+            <li>Click the <strong>subject tabs</strong> to switch between sections.</li>
             <li>Click numbers in the <strong>Navigation Grid</strong> to jump.</li>
         </ul>
 
@@ -608,12 +627,12 @@
     </div>
 </div>
 
-<!-- ============ EXAM INTERFACE (Pic 1 Layout) ============ -->
+<!-- ============ EXAM INTERFACE ============ -->
 <div class="exam-interface" id="examPortalView">
-    <!-- Top dark bar -->
+    <!-- Top light blue bar -->
     <div class="exam-top-bar">
         <div class="exam-top-subject" id="currentSubjectHeader">MATHEMATICS</div>
-        <div class="exam-top-title" id="streamTitleBar">Custom Test · 200 Questions</div>
+        <div class="exam-top-title" id="streamTitleBar">NET-Engineering · 200 Questions</div>
         <div class="exam-top-student"><span id="displayCandidateId">NUST026</span> (Student)</div>
     </div>
 
@@ -649,7 +668,10 @@
         </div>
     </div>
 
-    <!-- Navigation Grid -->
+    <!-- Subject Tabs -->
+    <div class="subject-tabs-bar" id="subjectTabsBar"></div>
+
+    <!-- Navigation Grid (only active subject) -->
     <div class="navigation-grid-wrapper" id="navButtonMatrixGrid"></div>
 
     <!-- Bottom action bar -->
@@ -657,8 +679,8 @@
         <div class="exam-timer-box">
             <div class="exam-timer-start" id="startTimeLabel">Start Time: --:--</div>
             <div class="exam-timer-mins">
-                <div class="big-num" id="timerMins">180</div>
-                <div class="small">min Remaining</div>
+                <div class="big-num" id="timerMins">3:00:00</div>
+                <div class="small">Remaining</div>
             </div>
             <div class="exam-timer-clock-icon">⏱</div>
         </div>
@@ -679,8 +701,7 @@
         <span onclick="triggerSubmitConfirmation()">Click here to <b>FINISH</b> Your Test</span>
     </div>
 
-    <!-- Hidden timer for compatibility -->
-    <div style="display:none" id="timerClockMinutes">03:00:00</div>
+    <div style="display:none" id="timerClockMinutes">3:00:00</div>
 </div>
 
 <!-- Confetti -->
@@ -736,6 +757,7 @@ var SECTION_LABELS = {
 var candidateId = '', selectedField = null, activeTestSessionPool = [], globalPointerIndex = 0;
 var totalSecondsRemaining = 180 * 60, trackingIntervalEngine = null;
 var allReviewData = [];
+var activeNavSection = null;  // currently viewed section in nav grid
 
 // ===== Screen helpers =====
 function showScreen(id) {
@@ -970,6 +992,7 @@ function launchTestEngine() {
         it.innerIndexValue = counts[it.sectionKeyName];
     }
     globalPointerIndex=0;
+    activeNavSection = bpOrder[0];
     totalSecondsRemaining=180*60;
     updateTimerDisplay();
     if (trackingIntervalEngine) clearInterval(trackingIntervalEngine);
@@ -977,17 +1000,19 @@ function launchTestEngine() {
         if (totalSecondsRemaining<=0) { clearInterval(trackingIntervalEngine); compileExamResults(); }
         else { totalSecondsRemaining--; updateTimerDisplay(); }
     },1000);
+    buildSubjectTabs();
     refreshWorkspace();
     generateNavMatrix();
 }
 
+// ===== Time format: H:MM:SS =====
 function updateTimerDisplay() {
     var h=Math.floor(totalSecondsRemaining/3600);
     var m=Math.floor((totalSecondsRemaining%3600)/60);
     var s=totalSecondsRemaining%60;
-    document.getElementById('timerClockMinutes').innerText = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-    var totalMin = Math.ceil(totalSecondsRemaining/60);
-    document.getElementById('timerMins').innerText = totalMin;
+    var formatted = h+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    document.getElementById('timerClockMinutes').innerText = formatted;
+    document.getElementById('timerMins').innerText = formatted;
 }
 
 function refreshWorkspace() {
@@ -1024,6 +1049,12 @@ function refreshWorkspace() {
             refreshWorkspace();
         });
     }
+    // Auto-switch active nav section to the current question's section
+    if (q.sectionKeyName !== activeNavSection) {
+        activeNavSection = q.sectionKeyName;
+        buildSubjectTabs();
+        generateNavMatrix();
+    }
     var navBtns = document.querySelectorAll('.nav-square-btn');
     for (var n=0; n<navBtns.length; n++) {
         navBtns[n].classList.remove('active-focus');
@@ -1031,30 +1062,61 @@ function refreshWorkspace() {
     }
 }
 
-function generateNavMatrix() {
-    var grid = document.getElementById('navButtonMatrixGrid');
-    grid.innerHTML = '';
-    if (!activeTestSessionPool.length) return;
+// ===== Subject Tabs =====
+function buildSubjectTabs() {
+    var bar = document.getElementById('subjectTabsBar');
+    bar.innerHTML = '';
     var cfg = FIELD_CONFIG[selectedField];
     var keys = Object.keys(cfg.blueprint);
     for (var k=0; k<keys.length; k++) {
-        var sec=keys[k], label=SECTION_LABELS[sec]||sec.toUpperCase();
-        var sq = activeTestSessionPool.filter(function(i){return i.sectionKeyName===sec;});
-        if (!sq.length) continue;
-        var cols = Math.min(cfg.blueprint[sec],20);
-        var html = '<div class="nav-section-label"><span>'+label+'</span></div>';
-        html += '<div class="nav-sub-grid" style="grid-template-columns:repeat('+cols+',1fr);">';
-        for (var j=0; j<sq.length; j++) {
-            var gIdx = activeTestSessionPool.indexOf(sq[j]);
-            var cls = 'nav-square-btn';
-            if (sq[j].isSavedPermanently) cls+=' filled';
-            if (sq[j].isFlagged) cls+=' flagged-review';
-            if (gIdx===globalPointerIndex) cls+=' active-focus';
-            html += '<div class="'+cls+'" data-sid="'+gIdx+'" onclick="navigateTo('+gIdx+')">'+sq[j].innerIndexValue+'</div>';
-        }
-        html += '</div>';
-        grid.innerHTML += html;
+        var sec = keys[k];
+        var label = SECTION_LABELS[sec] || sec.toUpperCase();
+        var count = cfg.blueprint[sec];
+        var tab = document.createElement('div');
+        tab.className = 'subject-tab'+(sec===activeNavSection?' active':'');
+        tab.innerHTML = label+' <span class="tab-count">('+count+')</span>';
+        (function(s){ tab.onclick = function(){ switchNavSection(s); }; })(sec);
+        bar.appendChild(tab);
     }
+}
+
+function switchNavSection(sec) {
+    activeNavSection = sec;
+    buildSubjectTabs();
+    generateNavMatrix();
+    // Also jump to first question of that section
+    for (var i=0; i<activeTestSessionPool.length; i++) {
+        if (activeTestSessionPool[i].sectionKeyName===sec) {
+            globalPointerIndex = i;
+            refreshWorkspace();
+            return;
+        }
+    }
+}
+
+// ===== Navigation Grid: ONLY active section =====
+function generateNavMatrix() {
+    var grid = document.getElementById('navButtonMatrixGrid');
+    grid.innerHTML = '';
+    if (!activeTestSessionPool.length || !activeNavSection) return;
+    var cfg = FIELD_CONFIG[selectedField];
+    var sec = activeNavSection;
+    var label = SECTION_LABELS[sec] || sec.toUpperCase();
+    var sq = activeTestSessionPool.filter(function(i){return i.sectionKeyName===sec;});
+    if (!sq.length) return;
+    var cols = Math.min(cfg.blueprint[sec],20);
+    var html = '<div class="nav-section-title">'+label+'</div>';
+    html += '<div class="nav-sub-grid" style="grid-template-columns:repeat('+cols+',1fr);">';
+    for (var j=0; j<sq.length; j++) {
+        var gIdx = activeTestSessionPool.indexOf(sq[j]);
+        var cls = 'nav-square-btn';
+        if (sq[j].isSavedPermanently) cls+=' filled';
+        if (sq[j].isFlagged) cls+=' flagged-review';
+        if (gIdx===globalPointerIndex) cls+=' active-focus';
+        html += '<div class="'+cls+'" data-sid="'+gIdx+'" onclick="navigateTo('+gIdx+')">'+sq[j].innerIndexValue+'</div>';
+    }
+    html += '</div>';
+    grid.innerHTML = html;
 }
 
 function navigateTo(gIdx) {
@@ -1101,7 +1163,7 @@ function jumpToPrevSection() {
 }
 
 function showHelp() {
-    alert('NAVIGATION HELP\n\n• Save: Save your answer\n• Review: Flag question for review\n• Next/Prev: Move between questions\n• Next Sec/Prev Sec: Jump between sections\n• First/Last: Go to first/last question\n• Jump to: Type number and click Go');
+    alert('NAVIGATION HELP\n\n• Save: Save your answer\n• Review: Flag question for review\n• Next/Prev: Move between questions\n• Next Sec/Prev Sec: Jump between sections\n• First/Last: Go to first/last question\n• Subject Tabs: Click to view navigation grid of that subject\n• Jump to: Type number and click Go');
 }
 
 function saveAnswerState() {
