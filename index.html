@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "3783bac929334b3eac2b0e9e69617817"}'></script>
+<head>
+    <link rel="apple-touch-icon" href="image.png">
+    <link rel="icon" href="image.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUST Computer Based Mock Test</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    
+    <script src="questions.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background-color: #EAF0F6; user-select: none; overflow-x: hidden; }
+
+        /* Animations */
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes scaleIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes confettiFall { 0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(39,174,96,0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(39,174,96,0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(39,174,96,0); }
+        }
+
+        /* ============ COMMON LIGHT-BLUE SCREENS ============ */
+        .lb-screen {
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; background: #EAF0F6; padding: 20px;
+        }
+        .lb-screen.active-flex { display: flex; }
+        .lb-title {
+            font-size: 42px; font-weight: 700; color: #2C3E50; text-align: center;
+            margin-bottom: 22px; letter-spacing: -1px;
+        }
+        .lb-card {
+            width: 100%; max-width: 460px; background: #F4F7FA;
+            padding: 32px 30px; border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(44, 62, 80, 0.08);
+            animation: fadeInUp 0.5s ease-out;
+        }
+        .lb-card-wide { max-width: 640px; }
+        .lb-input {
+            width: 100%; padding: 14px 18px; border: none; border-radius: 10px;
+            font-size: 15px; outline: none; color: #2C3E50; background: #FFFFFF;
+            margin-bottom: 14px; transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .lb-input::placeholder { color: #95A5A6; }
+        .lb-input:focus { box-shadow: 0 0 0 2px #5B8DC9; }
+        .lb-input.input-error { box-shadow: 0 0 0 2px #E74C3C; }
+        .lb-password-wrap { position: relative; }
+        .lb-password-wrap .lb-input { padding-right: 70px; }
+        .lb-toggle-pw {
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            background: transparent; border: none; color: #5B8DC9; font-size: 12px;
+            font-weight: 600; cursor: pointer; padding: 5px 10px; border-radius: 5px;
+        }
+        .lb-toggle-pw:hover { background: #E8EEF5; }
+        .lb-btn {
+            width: 100%; padding: 14px; background: #5B8DC9; color: white;
+            border: none; border-radius: 10px; font-weight: 700; font-size: 14px;
+            cursor: pointer; transition: all 0.2s; letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .lb-btn:hover { background: #4A7AB5; transform: translateY(-1px); }
+        .lb-btn-secondary {
+            background: #FFFFFF; color: #5B8DC9; border: 1.5px solid #5B8DC9;
+        }
+        .lb-btn-secondary:hover { background: #F0F5FA; }
+        .lb-btn-green { background: #27AE60; }
+        .lb-btn-green:hover { background: #229954; }
+        .lb-btn-red { background: #E74C3C; }
+        .lb-btn-red:hover { background: #C0392B; }
+        .lb-btn-row { display: flex; gap: 10px; margin-top: 8px; }
+        .lb-btn-row .lb-btn { flex: 1; }
+
+        .lb-status-badge {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            background: #E8F8F5; color: #117A65; font-size: 11px; font-weight: 700;
+            padding: 7px 16px; border-radius: 20px; width: fit-content;
+            margin: 0 auto 18px auto; letter-spacing: 0.5px;
+        }
+        .pulse-dot { width: 8px; height: 8px; background: #27AE60; border-radius: 50%; animation: pulse 1.8s infinite; }
+
+        .lb-section-head {
+            background: #5B8DC9; color: white; font-size: 12px; font-weight: 700;
+            padding: 9px 14px; border-radius: 8px; margin: 16px 0 8px 0;
+            text-transform: uppercase; letter-spacing: 0.4px;
+        }
+        .lb-list { list-style: none; padding: 0; }
+        .lb-list li {
+            font-size: 13px; color: #34495E; padding: 7px 0 7px 18px;
+            border-bottom: 1px solid #E5EAF0; line-height: 1.6; position: relative;
+        }
+        .lb-list li::before {
+            content: '▸'; position: absolute; left: 3px; color: #5B8DC9; font-weight: bold;
+        }
+        .lb-list li strong { color: #2C3E50; }
+        .lb-warning {
+            background: #FFF9E6; border-left: 4px solid #F39C12;
+            padding: 11px 14px; border-radius: 7px; font-size: 12.5px;
+            color: #7D6608; margin: 14px 0; line-height: 1.6;
+        }
+        .lb-important {
+            background: #FDEDEC; border-left: 4px solid #E74C3C;
+            padding: 11px 14px; border-radius: 7px; font-size: 12.5px;
+            color: #922B21; margin: 14px 0; line-height: 1.6;
+        }
+        .lb-scrollable { max-height: 90vh; overflow-y: auto; }
+        .lb-scrollable::-webkit-scrollbar { width: 5px; }
+        .lb-scrollable::-webkit-scrollbar-thumb { background: #5B8DC9; border-radius: 3px; }
+        .lb-scrollable::-webkit-scrollbar-track { background: #E5EAF0; }
+
+        /* Field Cards */
+        .lb-field-card {
+            display: flex; align-items: flex-start; gap: 12px; background: #FFFFFF;
+            border: 2px solid transparent; border-radius: 10px; padding: 12px 14px;
+            cursor: pointer; margin-bottom: 8px; transition: all 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .lb-field-card:hover { border-color: #5B8DC9; }
+        .lb-field-card.selected { border-color: #5B8DC9; background: #EAF2FA; }
+        .lb-field-card input[type="radio"] { accent-color: #5B8DC9; margin-top: 3px; flex-shrink: 0; transform: scale(1.2); }
+        .lb-fc-content { flex: 1; }
+        .lb-fc-title { font-weight: 700; font-size: 13px; color: #2C3E50; }
+        .lb-fc-detail { font-size: 11px; color: #5D6D7E; margin-top: 2px; }
+        .lb-fc-weightage { font-size: 10px; color: #5B8DC9; margin-top: 3px; background: #EAF2FA; padding: 2px 7px; border-radius: 3px; display: inline-block; font-weight: 600; }
+        .lb-fc-code { font-size: 10px; font-weight: 700; color: white; background: #5B8DC9; padding: 4px 9px; border-radius: 5px; flex-shrink: 0; }
+
+        /* ============ EXAM INTERFACE (Match Pic 1) ============ */
+        .exam-interface { display: none; min-height: 100vh; background: #F0F4F8; padding: 0; }
+
+        .exam-top-bar {
+            background: linear-gradient(to bottom, #2C3E50, #1B2838);
+            color: white; display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 24px; border-bottom: 1px solid #0F1A26;
+        }
+        .exam-top-subject { color: #2ECC71; font-size: 17px; font-weight: 700; }
+        .exam-top-title { color: #E74C3C; font-size: 14px; font-weight: 700; }
+        .exam-top-student { color: #5DADE2; font-size: 14px; font-weight: 700; }
+
+        .exam-sub-bar {
+            background: #FFFFFF; display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 24px; border-bottom: 1px solid #D5DBE0;
+        }
+        .exam-qnum { color: #27AE60; font-size: 14px; font-weight: 700; }
+        .exam-jump { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #34495E; }
+        .exam-jump input {
+            width: 60px; padding: 5px 8px; border: 1px solid #BDC3C7; border-radius: 4px;
+            font-size: 13px; outline: none; text-align: center;
+        }
+        .exam-jump-go {
+            background: #5B8DC9; color: white; border: none; padding: 5px 14px;
+            border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 12px;
+        }
+        .exam-jump-go:hover { background: #4A7AB5; }
+        .exam-marks { color: #34495E; font-size: 13px; font-weight: 600; }
+
+        .exam-content-area {
+            display: flex; gap: 14px; padding: 14px 20px; align-items: flex-start;
+        }
+        .exam-main-col { flex: 1; }
+        .exam-side-col { width: 170px; flex-shrink: 0; }
+
+        .exam-q-box {
+            background: #FFFFFF; border: 1px solid #D5DBE0; border-radius: 6px;
+            margin-bottom: 12px; overflow: hidden;
+        }
+        .exam-q-label {
+            background: #F4F7FA; color: #2C3E50; font-weight: 700; padding: 8px 14px;
+            font-size: 13px; border-bottom: 1px solid #D5DBE0;
+        }
+        .exam-q-body {
+            padding: 18px 20px; font-size: 15px; color: #2C3E50; line-height: 1.65; min-height: 100px;
+        }
+        .passage-container {
+            background: #F8F9FA; border-left: 4px solid #5B8DC9;
+            padding: 12px 14px; margin-bottom: 12px; font-size: 13.5px; line-height: 1.65; color: #333;
+            border-radius: 4px;
+        }
+        .passage-label { font-size: 11px; font-weight: 700; color: #5B8DC9; text-transform: uppercase; margin-bottom: 5px; }
+        .question-diagram { display: block; max-width: 280px; height: auto; margin: 10px auto; border-radius: 6px; border: 1px solid #D5DBE0; }
+
+        .exam-a-box {
+            background: #FFFFFF; border: 1px solid #D5DBE0; border-radius: 6px; overflow: hidden;
+        }
+        .exam-a-label {
+            background: #F4F7FA; color: #2C3E50; font-weight: 700; padding: 8px 14px;
+            font-size: 13px; border-bottom: 1px solid #D5DBE0;
+        }
+        .exam-a-label span { color: #E74C3C; font-weight: 500; font-size: 12px; }
+        .exam-options-list { padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
+        .option-row-item {
+            display: flex; align-items: center; padding: 12px 14px;
+            background: #FFFFFF; border: 1px solid #D5DBE0; border-radius: 6px;
+            cursor: pointer; transition: all 0.15s; font-size: 14px;
+        }
+        .option-row-item:hover { background: #F4F7FA; border-color: #5B8DC9; }
+        .option-row-item.selected { background: #EAF2FA; border-color: #5B8DC9; }
+        .option-row-item::before {
+            content: ''; display: inline-block; width: 16px; height: 16px; border-radius: 50%;
+            border: 2px solid #BDC3C7; margin-right: 12px; flex-shrink: 0; background: white;
+            transition: all 0.2s;
+        }
+        .option-row-item.selected::before {
+            border-color: #5B8DC9; background: #5B8DC9; box-shadow: inset 0 0 0 3px white;
+        }
+        .option-text { flex: 1; }
+
+        /* Side Photo */
+        .exam-photo-card {
+            background: #FFFFFF; border: 1px solid #D5DBE0; border-radius: 6px;
+            padding: 10px; text-align: center;
+        }
+        .exam-photo-label {
+            background: #F4F7FA; color: #2C3E50; font-weight: 700; padding: 6px;
+            font-size: 12px; border-radius: 4px; margin: -10px -10px 10px -10px;
+            border-bottom: 1px solid #D5DBE0;
+        }
+        .exam-photo-frame {
+            width: 100%; height: 140px; border: 2px solid #5B8DC9; border-radius: 4px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; color: #5B8DC9; font-size: 14px; background: #F8FAFD;
+        }
+        .exam-photo-id {
+            font-size: 11px; font-weight: 700; color: #2C3E50; margin-top: 8px;
+        }
+        .exam-photo-id span { color: #E74C3C; }
+
+        /* Navigation Grid */
+        .navigation-grid-wrapper {
+            background: #FFFFFF; border: 1px solid #D5DBE0; border-radius: 6px;
+            margin: 0 20px 12px 20px; padding: 10px;
+        }
+        .nav-section-label { display: flex; align-items: center; gap: 8px; margin: 4px 0 6px 0; }
+        .nav-section-label span {
+            font-size: 10.5px; font-weight: 700; color: white; background: #5B8DC9;
+            padding: 3px 10px; border-radius: 3px; text-transform: uppercase;
+        }
+        .nav-sub-grid { display: grid; gap: 3px; margin-bottom: 8px; }
+        .nav-square-btn {
+            background: #ECF0F4; border: 1px solid #BDC3C7; text-align: center;
+            font-size: 10.5px; padding: 5px 0; cursor: pointer; font-weight: 700;
+            color: #2C3E50; border-radius: 3px; transition: all 0.15s;
+        }
+        .nav-square-btn:hover { background: #D6E0EB; }
+        .nav-square-btn.active-focus { border: 2px solid #E74C3C; background: white; color: #E74C3C; }
+        .nav-square-btn.filled { background: #27AE60; color: white; border-color: #229954; }
+        .nav-square-btn.flagged-review { background: #F1C40F; color: black; border-color: #D4AC0D; }
+
+        /* Bottom Action Bar */
+        .exam-bottom-bar {
+            background: #FFFFFF; border-top: 1px solid #D5DBE0;
+            padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px;
+        }
+        .exam-timer-box {
+            display: flex; align-items: center; gap: 10px;
+        }
+        .exam-timer-start {
+            background: #F4F7FA; padding: 8px 12px; border-radius: 6px; font-size: 11px;
+            color: #2C3E50; font-weight: 700; border: 1px solid #D5DBE0;
+        }
+        .exam-timer-mins {
+            background: #FFFFFF; padding: 6px 16px; border-radius: 6px; text-align: center;
+            border: 1px solid #D5DBE0;
+        }
+        .exam-timer-mins .big-num { font-size: 24px; font-weight: 800; color: #27AE60; font-family: monospace; line-height: 1; }
+        .exam-timer-mins .small { font-size: 9px; color: #7F8C8D; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .exam-timer-clock-icon {
+            background: #5B8DC9; color: white; width: 36px; height: 36px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 18px;
+        }
+
+        .exam-action-buttons { display: flex; gap: 6px; flex-wrap: wrap; }
+        .exam-act-btn {
+            background: #FFFFFF; border: 1px solid #D5DBE0; padding: 8px 12px;
+            border-radius: 6px; cursor: pointer; transition: all 0.15s;
+            display: flex; flex-direction: column; align-items: center; min-width: 58px;
+            font-size: 10.5px; font-weight: 700; color: #2C3E50;
+        }
+        .exam-act-btn:hover { background: #F4F7FA; border-color: #5B8DC9; }
+        .exam-act-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .exam-act-icon { font-size: 16px; margin-bottom: 2px; color: #5B8DC9; }
+
+        .exam-finish-link {
+            text-align: center; padding: 12px; background: #FFFFFF;
+            border-top: 1px solid #D5DBE0;
+        }
+        .exam-finish-link span {
+            color: #5B8DC9; cursor: pointer; font-size: 13px;
+        }
+        .exam-finish-link span b { color: #E74C3C; text-decoration: underline; }
+        .exam-finish-link span:hover b { color: #C0392B; }
+
+        /* ============ RESULT MODAL ============ */
+        .modal-screen {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(44, 62, 80, 0.7); justify-content: center; align-items: center; z-index: 9999;
+            padding: 18px;
+        }
+        .modal-body {
+            background: #F4F7FA; border-radius: 14px; padding: 28px; text-align: center;
+            max-width: 720px; width: 100%; max-height: 92vh; overflow-y: auto;
+            animation: scaleIn 0.4s ease-out;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        .modal-body::-webkit-scrollbar { width: 5px; }
+        .modal-body::-webkit-scrollbar-thumb { background: #5B8DC9; border-radius: 3px; }
+
+        .confetti-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 10000; overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute; width: 10px; height: 10px; top: -20px;
+            animation: confettiFall linear forwards;
+        }
+        .score-output {
+            font-size: 42px; font-weight: 800; color: #27AE60; margin: 12px 0;
+            font-family: monospace; animation: bounceIn 0.6s ease-out;
+        }
+        .result-grade-badge {
+            display: inline-block; padding: 7px 20px; border-radius: 20px;
+            font-size: 13px; font-weight: 700; margin-bottom: 14px;
+        }
+        .grade-excellent { background: #D5F5E3; color: #1E8449; }
+        .grade-good { background: #D4E6F1; color: #1A5276; }
+        .grade-average { background: #FEF9E7; color: #7D6608; }
+        .grade-poor { background: #FADBD8; color: #922B21; }
+
+        .result-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px 0; }
+        .result-stat-card {
+            background: #FFFFFF; border-radius: 8px; padding: 14px 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        .result-stat-card .stat-value { font-size: 22px; font-weight: 800; font-family: monospace; }
+        .result-stat-card .stat-label { font-size: 11px; color: #5D6D7E; margin-top: 3px; font-weight: 600; }
+
+        .review-header {
+            background: #5B8DC9; color: white; text-align: left; padding: 9px 14px;
+            font-size: 13px; font-weight: 700; margin-top: 16px; text-transform: uppercase;
+            border-radius: 6px;
+        }
+        .review-box {
+            background: #FFFFFF; padding: 13px; margin-top: 7px; font-size: 13px;
+            line-height: 1.6; border-left: 4px solid #E74C3C; border-radius: 6px;
+            text-align: left; box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .review-box.box-correct { border-left-color: #27AE60; background: #F1FCF4; }
+
+        .review-filter-bar { display: flex; gap: 7px; justify-content: center; flex-wrap: wrap; margin: 12px 0; }
+        .review-filter-btn {
+            padding: 6px 14px; border: 1.5px solid #5B8DC9; border-radius: 20px;
+            font-size: 11px; font-weight: 700; cursor: pointer; background: #FFFFFF; color: #5B8DC9;
+            transition: all 0.2s;
+        }
+        .review-filter-btn.active, .review-filter-btn:hover { background: #5B8DC9; color: white; }
+
+        /* ============ AGGREGATE MODAL ============ */
+        .aggregate-modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(44, 62, 80, 0.7); justify-content: center; align-items: center;
+            z-index: 9999; padding: 14px;
+        }
+        .agg-tab-row { display: flex; gap: 8px; margin-bottom: 15px; }
+        .agg-tab {
+            flex: 1; padding: 10px; border: 1.5px solid #D5DBE0; border-radius: 8px;
+            background: #FFFFFF; font-size: 12px; font-weight: 700; cursor: pointer;
+            text-align: center; color: #5D6D7E; transition: all 0.2s;
+        }
+        .agg-tab.active { border-color: #5B8DC9; background: #5B8DC9; color: white; }
+        .agg-panel { display: none; }
+        .agg-panel.active { display: block; animation: fadeIn 0.3s ease; }
+        .agg-formula-box {
+            background: #EAF2FA; border-left: 4px solid #5B8DC9;
+            padding: 11px 14px; border-radius: 7px; font-size: 12px; color: #2C3E50;
+            margin-bottom: 14px; line-height: 1.6;
+        }
+        .agg-field-group { margin-bottom: 12px; text-align: left; }
+        .agg-field-group label {
+            display: block; font-size: 11px; font-weight: 700; color: #34495E;
+            margin-bottom: 5px; text-transform: uppercase;
+        }
+        .agg-input-row { display: flex; gap: 8px; align-items: center; }
+        .agg-input-row input {
+            flex: 1; padding: 10px 12px; border: none; border-radius: 7px;
+            font-size: 13px; outline: none; color: #2C3E50; background: #FFFFFF;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .agg-input-row input:focus { box-shadow: 0 0 0 2px #5B8DC9; }
+        .agg-input-row input.input-error { box-shadow: 0 0 0 2px #E74C3C; }
+        .agg-input-row span { font-size: 11px; color: #7F8C8D; font-weight: 600; white-space: nowrap; }
+        .agg-result-box {
+            display: none; margin-top: 14px; background: #D5F5E3; border: 2px solid #27AE60;
+            border-radius: 10px; padding: 16px; text-align: center; animation: bounceIn 0.4s;
+        }
+        .agg-result-box.show { display: block; }
+        .agg-result-score { font-size: 32px; font-weight: 800; color: #117A65; font-family: monospace; margin: 5px 0; }
+        .agg-result-label { font-size: 11px; color: #555; font-weight: 600; }
+        .agg-result-breakdown {
+            font-size: 12px; color: #333; background: rgba(255,255,255,0.7);
+            border-radius: 6px; padding: 10px; margin-top: 10px; text-align: left; line-height: 1.7;
+        }
+        .agg-error {
+            color: #C0392B; font-size: 11.5px; margin-top: 7px; font-weight: 600; display: none;
+            background: #FADBD8; border-radius: 6px; padding: 8px 11px; line-height: 1.5;
+        }
+
+        @media (max-width: 700px) {
+            .exam-content-area { flex-direction: column; }
+            .exam-side-col { width: 100%; }
+            .exam-top-bar { flex-wrap: wrap; gap: 6px; font-size: 12px; padding: 10px; }
+            .exam-top-bar > div { font-size: 13px; }
+            .result-stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div class="lb-screen active-flex" id="loginScreenView">
+    <div class="lb-title">Login</div>
+    <div class="lb-card">
+        <div class="lb-status-badge"><div class="pulse-dot"></div>SYSTEM STATUS: OPERATIONAL</div>
+        <input type="text" id="candidateIdInput" class="lb-input" placeholder="Candidate ID / Roll Number">
+        <div class="lb-password-wrap">
+            <input type="password" id="candidatePassInput" class="lb-input" placeholder="Password">
+            <button type="button" class="lb-toggle-pw" onclick="togglePasswordVisibility()">SHOW</button>
+        </div>
+        <button class="lb-btn" onclick="authenticateUserLogin()">LOG IN</button>
+    </div>
+</div>
+
+<!-- ============ INSTRUCTIONS SCREEN ============ -->
+<div class="lb-screen" id="instructionsScreenView">
+    <div class="lb-title">Instructions</div>
+    <div class="lb-card lb-card-wide lb-scrollable">
+        <div class="lb-status-badge"><div class="pulse-dot"></div>CANDIDATE: <span id="instructionsCandidateId">---</span></div>
+
+        <div class="lb-section-head">General Information</div>
+        <ul class="lb-list">
+            <li>This is a <strong>Computer Based Entry Test (CBNET / NET)</strong> conducted by NUST Islamabad.</li>
+            <li>The test consists of <strong>200 MCQs</strong> with a total duration of <strong>180 minutes</strong>.</li>
+            <li>Each correct answer = <strong>1 mark</strong>. <strong>No negative marking</strong>.</li>
+            <li>The test is divided into sections based on your selected field.</li>
+        </ul>
+
+        <div class="lb-section-head">Test Structure by Field</div>
+        <ul class="lb-list">
+            <li><strong>NET-Engineering:</strong> Mathematics (100) + Physics (60) + English (40)</li>
+            <li><strong>NET-Applied Sciences:</strong> Biology (100) + Chemistry (60) + English (40)</li>
+            <li><strong>NET-Business &amp; Social Sciences:</strong> Quantitative Maths (100) + English (100)</li>
+            <li><strong>NET-Architecture:</strong> Design Aptitude (100) + Mathematics (60) + English (40)</li>
+            <li><strong>NET-Natural Sciences:</strong> Mathematics (100) + English (100)</li>
+        </ul>
+
+        <div class="lb-section-head">How to Navigate</div>
+        <ul class="lb-list">
+            <li>Click on any option to <strong>select your answer</strong>.</li>
+            <li>Press <strong>Save</strong> to record your answer and advance.</li>
+            <li>Use <strong>Next</strong> / <strong>Prev</strong> to navigate.</li>
+            <li>Click numbers in the <strong>Navigation Grid</strong> to jump.</li>
+        </ul>
+
+        <div class="lb-section-head">Colour Legend</div>
+        <ul class="lb-list">
+            <li><strong style="color:#7F8C8D;">Grey</strong> = Not answered</li>
+            <li><strong style="color:#27AE60;">Green</strong> = Saved</li>
+            <li><strong style="color:#D4AC0D;">Yellow</strong> = Marked for review</li>
+            <li><strong style="color:#E74C3C;">Red Border</strong> = Active question</li>
+        </ul>
+
+        <div class="lb-warning"><strong>Aggregate Formula:</strong> 75% NET + 15% FSc/A-Level + 10% Matric/O-Level. Use the Aggregate Calculator next.</div>
+        <div class="lb-important"><strong>Important:</strong> Do not refresh or close the browser. Unfair means will lead to cancellation.</div>
+
+        <button class="lb-btn" onclick="goToFieldSelect()" style="margin-top:12px;">SELECT FIELD / STREAM</button>
+    </div>
+</div>
+
+<!-- ============ FIELD SELECT SCREEN ============ -->
+<div class="lb-screen" id="fieldSelectScreenView">
+    <div class="lb-title">Select Field</div>
+    <div class="lb-card lb-card-wide">
+        <div class="lb-status-badge"><div class="pulse-dot"></div>CANDIDATE: <span id="fieldSelectCandidateId">---</span></div>
+
+        <div id="fieldSelectorContainer">
+            <div class="lb-field-card" onclick="selectField(this,'engineering')">
+                <input type="radio" name="fieldChoice" value="engineering">
+                <div class="lb-fc-content">
+                    <div class="lb-fc-title">NET-Engineering</div>
+                    <div class="lb-fc-detail">HSSC Pre-Engg / ICS / equivalent</div>
+                    <div class="lb-fc-weightage">Maths 50% | Physics 30% | English 20%</div>
+                </div>
+                <div class="lb-fc-code">ENG</div>
+            </div>
+            <div class="lb-field-card" onclick="selectField(this,'applied_sciences')">
+                <input type="radio" name="fieldChoice" value="applied_sciences">
+                <div class="lb-fc-content">
+                    <div class="lb-fc-title">NET-Applied Sciences</div>
+                    <div class="lb-fc-detail">HSSC Pre-Medical group</div>
+                    <div class="lb-fc-weightage">Biology 50% | Chemistry 30% | English 20%</div>
+                </div>
+                <div class="lb-fc-code">APS</div>
+            </div>
+            <div class="lb-field-card" onclick="selectField(this,'business_studies')">
+                <input type="radio" name="fieldChoice" value="business_studies">
+                <div class="lb-fc-content">
+                    <div class="lb-fc-title">NET-Business &amp; Social Sciences</div>
+                    <div class="lb-fc-detail">HSSC any combination</div>
+                    <div class="lb-fc-weightage">Quant Maths 50% | English 50%</div>
+                </div>
+                <div class="lb-fc-code">BUS</div>
+            </div>
+            <div class="lb-field-card" onclick="selectField(this,'architecture')">
+                <input type="radio" name="fieldChoice" value="architecture">
+                <div class="lb-fc-content">
+                    <div class="lb-fc-title">NET-Architecture</div>
+                    <div class="lb-fc-detail">HSSC with Maths and Physics</div>
+                    <div class="lb-fc-weightage">Design 50% | Maths 30% | English 20%</div>
+                </div>
+                <div class="lb-fc-code">ARC</div>
+            </div>
+            <div class="lb-field-card" onclick="selectField(this,'natural_sciences')">
+                <input type="radio" name="fieldChoice" value="natural_sciences">
+                <div class="lb-fc-content">
+                    <div class="lb-fc-title">NET-Natural Sciences</div>
+                    <div class="lb-fc-detail">HSSC / equivalent</div>
+                    <div class="lb-fc-weightage">Mathematics 50% | English 50%</div>
+                </div>
+                <div class="lb-fc-code">NSC</div>
+            </div>
+        </div>
+
+        <button class="lb-btn lb-btn-green" onclick="startExam()" style="margin-top:10px;">START ASSESSMENT</button>
+        <div class="lb-btn-row">
+            <button class="lb-btn" onclick="openAggregateModal()">AGGREGATE CALCULATOR</button>
+            <button class="lb-btn lb-btn-secondary" onclick="goBackToInstructions()">BACK</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============ AGGREGATE MODAL ============ -->
+<div class="aggregate-modal-overlay" id="aggregateModalOverlay" onclick="closeAggOnBackdrop(event)">
+    <div class="lb-card lb-card-wide lb-scrollable" style="max-width:520px;">
+        <div class="lb-title" style="font-size:26px;margin-bottom:6px;">Aggregate Calculator</div>
+        <div style="text-align:center;color:#7F8C8D;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">Estimate your NUST merit score</div>
+
+        <div class="agg-tab-row">
+            <div class="agg-tab active" id="tabFsc" onclick="switchAggTab('fsc')">FSc / Matric</div>
+            <div class="agg-tab" id="tabAlevel" onclick="switchAggTab('alevel')">A-Level / O-Level</div>
+        </div>
+
+        <div class="agg-panel active" id="panelFsc">
+            <div class="agg-formula-box"><strong>Formula:</strong> 75% × (NET/200×100) + 15% × (FSc%) + 10% × (Matric%)</div>
+            <div class="agg-field-group">
+                <label>NET Score</label>
+                <div class="agg-input-row"><input type="number" id="fsc_net" placeholder="Obtained" min="0" max="200"><span>/ 200</span></div>
+            </div>
+            <div class="agg-field-group">
+                <label>FSc / HSSC Marks</label>
+                <div class="agg-input-row"><input type="number" id="fsc_obtained" placeholder="Obtained" min="0"><span>out of</span><input type="number" id="fsc_total" placeholder="Total" min="0"></div>
+            </div>
+            <div class="agg-field-group">
+                <label>Matric / SSC Marks</label>
+                <div class="agg-input-row"><input type="number" id="matric_obtained" placeholder="Obtained" min="0"><span>out of</span><input type="number" id="matric_total" placeholder="Total" min="0"></div>
+            </div>
+            <div class="agg-error" id="fscError"></div>
+            <button class="lb-btn lb-btn-green" onclick="calculateAggregateFsc()">CALCULATE</button>
+            <div class="agg-result-box" id="fscResultBox">
+                <div class="agg-result-label">Your Estimated NUST Aggregate</div>
+                <div class="agg-result-score" id="fscResultScore"></div>
+                <div class="agg-result-breakdown" id="fscResultBreakdown"></div>
+            </div>
+        </div>
+
+        <div class="agg-panel" id="panelAlevel">
+            <div class="agg-formula-box"><strong>IBCC Equivalence:</strong> A*=90, A=85, B=75, C=65, D=55, E=45<br>75% × (NET) + 15% × (A-Level%) + 10% × (O-Level%)</div>
+            <div class="agg-field-group">
+                <label>NET Score</label>
+                <div class="agg-input-row"><input type="number" id="al_net" placeholder="Obtained" min="0" max="200"><span>/ 200</span></div>
+            </div>
+            <div class="agg-field-group">
+                <label>A-Level IBCC Marks</label>
+                <div class="agg-input-row"><input type="number" id="al_obtained" placeholder="Obtained" min="0"><span>out of</span><input type="number" id="al_total" placeholder="Total" min="0"></div>
+            </div>
+            <div class="agg-field-group">
+                <label>O-Level IBCC Marks</label>
+                <div class="agg-input-row"><input type="number" id="ol_obtained" placeholder="Obtained" min="0"><span>out of</span><input type="number" id="ol_total" placeholder="Total" min="0"></div>
+            </div>
+            <div class="agg-error" id="alevelError"></div>
+            <button class="lb-btn lb-btn-green" onclick="calculateAggregateAlevel()">CALCULATE</button>
+            <div class="agg-result-box" id="alevelResultBox">
+                <div class="agg-result-label">Your Estimated NUST Aggregate</div>
+                <div class="agg-result-score" id="alevelResultScore"></div>
+                <div class="agg-result-breakdown" id="alevelResultBreakdown"></div>
+            </div>
+        </div>
+
+        <button class="lb-btn lb-btn-secondary" onclick="closeAggregateModal()" style="margin-top:14px;">CLOSE</button>
+    </div>
+</div>
+
+<!-- ============ EXAM INTERFACE (Pic 1 Layout) ============ -->
+<div class="exam-interface" id="examPortalView">
+    <!-- Top dark bar -->
+    <div class="exam-top-bar">
+        <div class="exam-top-subject" id="currentSubjectHeader">MATHEMATICS</div>
+        <div class="exam-top-title" id="streamTitleBar">Custom Test · 200 Questions</div>
+        <div class="exam-top-student"><span id="displayCandidateId">NUST026</span> (Student)</div>
+    </div>
+
+    <!-- Question num + jump + marks -->
+    <div class="exam-sub-bar">
+        <div class="exam-qnum" id="questionNumTracker">Question No: 1 of 100</div>
+        <div class="exam-jump">
+            <span>Jump to:</span>
+            <input type="number" id="jumpInput" placeholder="#" min="1">
+            <button class="exam-jump-go" onclick="performJump()">Go</button>
+            <span class="exam-marks" style="margin-left:16px;">Marks: 1</span>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="exam-content-area">
+        <div class="exam-main-col">
+            <div class="exam-q-box">
+                <div class="exam-q-label">Question</div>
+                <div class="exam-q-body" id="questionTextBox">Loading question...</div>
+            </div>
+            <div class="exam-a-box">
+                <div class="exam-a-label">Answer <span>( Please select your correct option )</span></div>
+                <div class="exam-options-list" id="optionsRadioGroup"></div>
+            </div>
+        </div>
+        <div class="exam-side-col">
+            <div class="exam-photo-card">
+                <div class="exam-photo-label">Photograph</div>
+                <div class="exam-photo-frame">Student</div>
+                <div class="exam-photo-id">ID: <span id="displayCandidateIdSide">NUST026</span><br><span id="displayFieldCode" style="color:#5B8DC9;">ENG</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Grid -->
+    <div class="navigation-grid-wrapper" id="navButtonMatrixGrid"></div>
+
+    <!-- Bottom action bar -->
+    <div class="exam-bottom-bar">
+        <div class="exam-timer-box">
+            <div class="exam-timer-start" id="startTimeLabel">Start Time: --:--</div>
+            <div class="exam-timer-mins">
+                <div class="big-num" id="timerMins">180</div>
+                <div class="small">min Remaining</div>
+            </div>
+            <div class="exam-timer-clock-icon">⏱</div>
+        </div>
+        <div class="exam-action-buttons" id="examActionButtons">
+            <button class="exam-act-btn" onclick="saveAnswerState()"><div class="exam-act-icon">💾</div>Save</button>
+            <button class="exam-act-btn" onclick="flagQuestionToggle()"><div class="exam-act-icon">🔖</div>Review</button>
+            <button class="exam-act-btn" onclick="shiftActiveIndex(1)"><div class="exam-act-icon">▶</div>Next</button>
+            <button class="exam-act-btn" onclick="shiftActiveIndex(-1)"><div class="exam-act-icon">◀</div>Prev</button>
+            <button class="exam-act-btn" onclick="jumpToNextSection()"><div class="exam-act-icon">⏭</div>Next Sec</button>
+            <button class="exam-act-btn" onclick="jumpToPrevSection()"><div class="exam-act-icon">⏮</div>Prev Sec</button>
+            <button class="exam-act-btn" onclick="navigateTo(0)"><div class="exam-act-icon">⏪</div>First</button>
+            <button class="exam-act-btn" onclick="navigateTo(activeTestSessionPool.length-1)"><div class="exam-act-icon">⏩</div>Last</button>
+            <button class="exam-act-btn" onclick="showHelp()"><div class="exam-act-icon">❓</div>Help</button>
+        </div>
+    </div>
+
+    <div class="exam-finish-link">
+        <span onclick="triggerSubmitConfirmation()">Click here to <b>FINISH</b> Your Test</span>
+    </div>
+
+    <!-- Hidden timer for compatibility -->
+    <div style="display:none" id="timerClockMinutes">03:00:00</div>
+</div>
+
+<!-- Confetti -->
+<div class="confetti-container" id="confettiContainer"></div>
+
+<!-- ============ RESULT MODAL ============ -->
+<div class="modal-screen" id="reportCardModalOverlay">
+    <div class="modal-body">
+        <div class="lb-title" style="font-size:24px;margin-bottom:6px;">Result Summary</div>
+        <p style="font-size:12px;color:#7F8C8D;margin-bottom:8px;">Scoring: +1 correct, 0 incorrect</p>
+        <div class="score-output" id="totalScoreTarget">0 / 200</div>
+        <div id="resultGradeBadge"></div>
+        <div class="result-stats-grid" id="resultStatsGrid"></div>
+        <div id="subjectScoreBreakdownBox" style="text-align:left;background:#FFFFFF;padding:14px;font-size:12.5px;line-height:1.7;border-radius:9px;margin-bottom:14px;box-shadow:0 1px 3px rgba(0,0,0,0.05);"></div>
+
+        <div class="review-filter-bar">
+            <button class="review-filter-btn active" onclick="filterReview('all', this)">All</button>
+            <button class="review-filter-btn" onclick="filterReview('wrong', this)">Wrong</button>
+            <button class="review-filter-btn" onclick="filterReview('correct', this)">Correct</button>
+            <button class="review-filter-btn" onclick="filterReview('unattempted', this)">Unattempted</button>
+        </div>
+
+        <div id="wrongQuestionsReviewPanel"></div>
+
+        <div class="lb-btn-row" style="margin-top:18px;">
+            <button class="lb-btn lb-btn-red" onclick="window.location.reload()">EXIT</button>
+            <button class="lb-btn" onclick="window.location.reload()">RESTART</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ===== Config =====
+var FIELD_CONFIG = {
+    'engineering': { label:'NET-Engineering', code:'ENG', description:'Engineering Stream', totalMCQs:200,
+        blueprint:{ mathematics:100, physics:60, english:40 }, bankKeys:{ mathematics:'mathematics', physics:'physics', english:'english' } },
+    'applied_sciences': { label:'NET-Applied Sciences', code:'APS', description:'Applied Biosciences', totalMCQs:200,
+        blueprint:{ biology:100, chemistry:60, english:40 }, bankKeys:{ biology:'biology', chemistry:'chemistry', english:'english' } },
+    'business_studies': { label:'NET-Business Studies', code:'BUS', description:'Business / Social Sciences', totalMCQs:200,
+        blueprint:{ quantitative_mathematics:100, english:100 }, bankKeys:{ quantitative_mathematics:'quantitative_mathematics', english:'english' } },
+    'architecture': { label:'NET-Architecture', code:'ARC', description:'Architecture / Industrial Design', totalMCQs:200,
+        blueprint:{ design_aptitude:100, mathematics:60, english:40 }, bankKeys:{ design_aptitude:'design_aptitude', mathematics:'mathematics', english:'english' } },
+    'natural_sciences': { label:'NET-Natural Sciences', code:'NSC', description:'Natural Sciences', totalMCQs:200,
+        blueprint:{ mathematics:100, english:100 }, bankKeys:{ mathematics:'mathematics', english:'english' } }
+};
+var SECTION_LABELS = {
+    mathematics:'MATHEMATICS', physics:'PHYSICS', english:'ENGLISH',
+    biology:'BIOLOGY', chemistry:'CHEMISTRY',
+    quantitative_mathematics:'QUANTITATIVE MATHEMATICS', design_aptitude:'DESIGN APTITUDE'
+};
+
+// ===== State =====
+var candidateId = '', selectedField = null, activeTestSessionPool = [], globalPointerIndex = 0;
+var totalSecondsRemaining = 180 * 60, trackingIntervalEngine = null;
+var allReviewData = [];
+
+// ===== Screen helpers =====
+function showScreen(id) {
+    var screens = ['loginScreenView','instructionsScreenView','fieldSelectScreenView'];
+    for (var i=0; i<screens.length; i++) {
+        var el = document.getElementById(screens[i]);
+        if (el) el.classList.remove('active-flex');
+    }
+    var target = document.getElementById(id);
+    if (target) target.classList.add('active-flex');
+}
+
+// ===== Confetti =====
+function launchConfetti() {
+    var c = document.getElementById('confettiContainer');
+    c.innerHTML = '';
+    var colors = ['#5B8DC9','#E74C3C','#27AE60','#F39C12','#9B59B6','#1ABC9C','#FFD700'];
+    for (var i=0; i<60; i++) {
+        var p = document.createElement('div');
+        p.className = 'confetti-piece';
+        var s = Math.random()*7+4;
+        p.style.width = s+'px'; p.style.height = s+'px';
+        p.style.background = colors[Math.floor(Math.random()*colors.length)];
+        p.style.left = Math.random()*100+'%';
+        p.style.borderRadius = Math.random()>0.5 ? '50%':'2px';
+        p.style.animationDuration = (Math.random()*3+2)+'s';
+        p.style.animationDelay = (Math.random()*1.5)+'s';
+        c.appendChild(p);
+    }
+    setTimeout(function(){c.innerHTML='';},5000);
+}
+
+// ===== Login =====
+function togglePasswordVisibility() {
+    var p = document.getElementById('candidatePassInput');
+    var b = p.nextElementSibling;
+    if (p.type==='password') { p.type='text'; b.innerText='HIDE'; }
+    else { p.type='password'; b.innerText='SHOW'; }
+}
+
+function authenticateUserLogin() {
+    candidateId = document.getElementById('candidateIdInput').value.trim();
+    var pass = document.getElementById('candidatePassInput').value.trim();
+    if (!candidateId || !pass) { alert('Both ID and Password required.'); return; }
+    if (pass !== 'NUST2026June') { alert('Access Denied: Invalid Password.'); return; }
+    document.getElementById('instructionsCandidateId').innerText = candidateId;
+    showScreen('instructionsScreenView');
+}
+
+function goToFieldSelect() {
+    document.getElementById('fieldSelectCandidateId').innerText = candidateId;
+    showScreen('fieldSelectScreenView');
+}
+function goBackToInstructions() { showScreen('instructionsScreenView'); }
+
+// ===== Aggregate =====
+function openAggregateModal() { document.getElementById('aggregateModalOverlay').style.display='flex'; }
+function closeAggregateModal() { document.getElementById('aggregateModalOverlay').style.display='none'; }
+function closeAggOnBackdrop(e) { if (e.target===document.getElementById('aggregateModalOverlay')) closeAggregateModal(); }
+function switchAggTab(tab) {
+    document.getElementById('tabFsc').className = 'agg-tab'+(tab==='fsc'?' active':'');
+    document.getElementById('tabAlevel').className = 'agg-tab'+(tab==='alevel'?' active':'');
+    document.getElementById('panelFsc').className = 'agg-panel'+(tab==='fsc'?' active':'');
+    document.getElementById('panelAlevel').className = 'agg-panel'+(tab==='alevel'?' active':'');
+}
+function clearInputErrors(ids){for(var i=0;i<ids.length;i++){var e=document.getElementById(ids[i]);if(e)e.classList.remove('input-error');}}
+function setInputError(id){var e=document.getElementById(id);if(e)e.classList.add('input-error');}
+
+function calculateAggregateFsc() {
+    var errEl=document.getElementById('fscError'), rb=document.getElementById('fscResultBox');
+    var ids=['fsc_net','fsc_obtained','fsc_total','matric_obtained','matric_total'];
+    clearInputErrors(ids); errEl.style.display='none'; rb.classList.remove('show');
+    var net=parseFloat(document.getElementById('fsc_net').value);
+    var fO=parseFloat(document.getElementById('fsc_obtained').value);
+    var fT=parseFloat(document.getElementById('fsc_total').value);
+    var mO=parseFloat(document.getElementById('matric_obtained').value);
+    var mT=parseFloat(document.getElementById('matric_total').value);
+    var errors=[];
+    if(isNaN(net)){errors.push('NET required.');setInputError('fsc_net');}
+    if(isNaN(fO)){errors.push('FSc obtained required.');setInputError('fsc_obtained');}
+    if(isNaN(fT)){errors.push('FSc total required.');setInputError('fsc_total');}
+    if(isNaN(mO)){errors.push('Matric obtained required.');setInputError('matric_obtained');}
+    if(isNaN(mT)){errors.push('Matric total required.');setInputError('matric_total');}
+    if(errors.length){errEl.innerHTML=errors.join('<br>');errEl.style.display='block';return;}
+    if(net<0||net>200){errors.push('NET must be 0-200.');setInputError('fsc_net');}
+    if(fT<=0||fT>1200){errors.push('FSc total invalid.');setInputError('fsc_total');}
+    if(fO<0||fO>fT){errors.push('FSc obtained invalid.');setInputError('fsc_obtained');}
+    if(mT<=0||mT>1200){errors.push('Matric total invalid.');setInputError('matric_total');}
+    if(mO<0||mO>mT){errors.push('Matric obtained invalid.');setInputError('matric_obtained');}
+    if(errors.length){errEl.innerHTML=errors.join('<br>');errEl.style.display='block';return;}
+    var nP=net/200*100, fP=fO/fT*100, mP=mO/mT*100;
+    var nC=0.75*nP, fC=0.15*fP, mC=0.10*mP, agg=nC+fC+mC;
+    document.getElementById('fscResultScore').innerText=agg.toFixed(2)+'%';
+    document.getElementById('fscResultBreakdown').innerHTML=
+        '<strong>Breakdown:</strong><br>NET (75%): '+nC.toFixed(2)+'<br>FSc (15%): '+fC.toFixed(2)+'<br>Matric (10%): '+mC.toFixed(2)+'<br><hr><strong>Total: '+agg.toFixed(2)+'%</strong>';
+    rb.classList.add('show');
+}
+
+function calculateAggregateAlevel() {
+    var errEl=document.getElementById('alevelError'), rb=document.getElementById('alevelResultBox');
+    var ids=['al_net','al_obtained','al_total','ol_obtained','ol_total'];
+    clearInputErrors(ids); errEl.style.display='none'; rb.classList.remove('show');
+    var net=parseFloat(document.getElementById('al_net').value);
+    var aO=parseFloat(document.getElementById('al_obtained').value);
+    var aT=parseFloat(document.getElementById('al_total').value);
+    var oO=parseFloat(document.getElementById('ol_obtained').value);
+    var oT=parseFloat(document.getElementById('ol_total').value);
+    var errors=[];
+    if(isNaN(net)){errors.push('NET required.');setInputError('al_net');}
+    if(isNaN(aO)){errors.push('A-Level obtained required.');setInputError('al_obtained');}
+    if(isNaN(aT)){errors.push('A-Level total required.');setInputError('al_total');}
+    if(isNaN(oO)){errors.push('O-Level obtained required.');setInputError('ol_obtained');}
+    if(isNaN(oT)){errors.push('O-Level total required.');setInputError('ol_total');}
+    if(errors.length){errEl.innerHTML=errors.join('<br>');errEl.style.display='block';return;}
+    if(net<0||net>200){errors.push('NET must be 0-200.');setInputError('al_net');}
+    if(aT<=0||aT>1200){errors.push('A-Level total invalid.');setInputError('al_total');}
+    if(aO<0||aO>aT){errors.push('A-Level obtained invalid.');setInputError('al_obtained');}
+    if(oT<=0||oT>1200){errors.push('O-Level total invalid.');setInputError('ol_total');}
+    if(oO<0||oO>oT){errors.push('O-Level obtained invalid.');setInputError('ol_obtained');}
+    if(errors.length){errEl.innerHTML=errors.join('<br>');errEl.style.display='block';return;}
+    var nP=net/200*100, aP=aO/aT*100, oP=oO/oT*100;
+    var nC=0.75*nP, aC=0.15*aP, oC=0.10*oP, agg=nC+aC+oC;
+    document.getElementById('alevelResultScore').innerText=agg.toFixed(2)+'%';
+    document.getElementById('alevelResultBreakdown').innerHTML=
+        '<strong>Breakdown:</strong><br>NET (75%): '+nC.toFixed(2)+'<br>A-Level (15%): '+aC.toFixed(2)+'<br>O-Level (10%): '+oC.toFixed(2)+'<br><hr><strong>Total: '+agg.toFixed(2)+'%</strong>';
+    rb.classList.add('show');
+}
+
+// ===== Field Selection =====
+function selectField(el, val) {
+    var cards = document.querySelectorAll('.lb-field-card');
+    var radios = document.querySelectorAll('.lb-field-card input');
+    for (var i=0; i<cards.length; i++) cards[i].classList.remove('selected');
+    for (var i=0; i<radios.length; i++) radios[i].checked = false;
+    el.classList.add('selected');
+    el.querySelector('input').checked = true;
+    selectedField = val;
+}
+
+// ===== Math Rendering =====
+function wrapMathEnvironments(text) {
+    var envs = ['matrix','pmatrix','bmatrix','Bmatrix','vmatrix','Vmatrix','array','cases','dcases','rcases','drcases','aligned','gathered','split','smallmatrix','subarray'];
+    var result = text;
+    for (var e=0; e<envs.length; e++) {
+        var env=envs[e];
+        var r=new RegExp('(?<!\\$|\\\\\\()(\\\\begin\\{'+env+'\\})([\\s\\S]*?)(\\\\end\\{'+env+'\\})(?!\\$|\\\\\\))','g');
+        result=result.replace(r,'$$$1$2$3$$');
+    }
+    var spe=['align','equation','gather','CD','alignat','flalign','multline'];
+    for (var e=0; e<spe.length; e++) {
+        var env=spe[e];
+        var r=new RegExp('(?<!\\$|\\\\\\()(\\\\begin\\{'+env+'\\})([\\s\\S]*?)(\\\\end\\{'+env+'\\})(?!\\$|\\\\\\))','g');
+        result=result.replace(r,'$$$1$2$3$$');
+    }
+    return result;
+}
+
+function renderMathInElementSafe(element) {
+    if (typeof renderMathInElement !== 'function') return;
+    if (element.innerHTML) element.innerHTML = wrapMathEnvironments(element.innerHTML);
+    try {
+        renderMathInElement(element, {
+            delimiters: [
+                {left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false},
+                {left:"\\(",right:"\\)",display:false},{left:"\\[",right:"\\]",display:true}
+            ],
+            throwOnError:false, errorColor:'#CC0000'
+        });
+    } catch(e) {}
+}
+
+// ===== Exam Start =====
+function startExam() {
+    if (!selectedField) { alert('Please select your Field / Stream.'); return; }
+    var cfg = FIELD_CONFIG[selectedField];
+    if (typeof QUESTION_BANK === 'undefined') { alert('questions.js missing.'); return; }
+    if (!QUESTION_BANK[selectedField]) { alert('No data for this field.'); return; }
+    document.getElementById('displayCandidateId').innerText = candidateId;
+    document.getElementById('displayCandidateIdSide').innerText = candidateId;
+    document.getElementById('displayFieldCode').innerText = cfg.code;
+    document.getElementById('streamTitleBar').innerText = cfg.label + ' · 200 Questions';
+    showScreen('');
+    document.getElementById('fieldSelectScreenView').classList.remove('active-flex');
+    document.getElementById('examPortalView').style.display = 'block';
+
+    var now = new Date();
+    var hr = now.getHours(); var mn = now.getMinutes();
+    var ampm = hr>=12 ? 'PM' : 'AM';
+    hr = hr%12 || 12;
+    document.getElementById('startTimeLabel').innerText = 'Start Time: '+hr+':'+String(mn).padStart(2,'0')+' '+ampm;
+
+    launchTestEngine();
+}
+
+function pullRandomPool(src, limit) {
+    if (!src||!src.length) return [];
+    var c = src.slice().sort(function(){return 0.5-Math.random();});
+    while (c.length<limit) c=c.concat(c);
+    return c.slice(0,limit).map(function(item){
+        var copy={}; for (var k in item) copy[k]=item[k];
+        copy.chosenIndexValue=null; copy.isFlagged=false; copy.isSavedPermanently=false;
+        return copy;
+    });
+}
+
+function launchTestEngine() {
+    activeTestSessionPool = [];
+    var cfg = FIELD_CONFIG[selectedField];
+    var fieldData = QUESTION_BANK[selectedField];
+    var bpOrder = Object.keys(cfg.blueprint);
+    for (var s=0; s<bpOrder.length; s++) {
+        var sec=bpOrder[s], bankKey=cfg.bankKeys[sec];
+        if (fieldData[bankKey]) {
+            var qs = pullRandomPool(fieldData[bankKey], cfg.blueprint[sec]);
+            var cnt=1;
+            for (var q=0; q<qs.length; q++) {
+                qs[q].innerIndexValue = cnt++;
+                qs[q].sectionKeyName = sec;
+            }
+            activeTestSessionPool = activeTestSessionPool.concat(qs);
+        }
+    }
+    activeTestSessionPool.sort(function(a,b){
+        var oa=bpOrder.indexOf(a.sectionKeyName), ob=bpOrder.indexOf(b.sectionKeyName);
+        return oa!==ob ? oa-ob : a.innerIndexValue-b.innerIndexValue;
+    });
+    var counts={};
+    for (var i=0; i<activeTestSessionPool.length; i++) {
+        var it=activeTestSessionPool[i];
+        if (!counts[it.sectionKeyName]) counts[it.sectionKeyName]=0;
+        counts[it.sectionKeyName]++;
+        it.innerIndexValue = counts[it.sectionKeyName];
+    }
+    globalPointerIndex=0;
+    totalSecondsRemaining=180*60;
+    updateTimerDisplay();
+    if (trackingIntervalEngine) clearInterval(trackingIntervalEngine);
+    trackingIntervalEngine = setInterval(function(){
+        if (totalSecondsRemaining<=0) { clearInterval(trackingIntervalEngine); compileExamResults(); }
+        else { totalSecondsRemaining--; updateTimerDisplay(); }
+    },1000);
+    refreshWorkspace();
+    generateNavMatrix();
+}
+
+function updateTimerDisplay() {
+    var h=Math.floor(totalSecondsRemaining/3600);
+    var m=Math.floor((totalSecondsRemaining%3600)/60);
+    var s=totalSecondsRemaining%60;
+    document.getElementById('timerClockMinutes').innerText = String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    var totalMin = Math.ceil(totalSecondsRemaining/60);
+    document.getElementById('timerMins').innerText = totalMin;
+}
+
+function refreshWorkspace() {
+    if (!activeTestSessionPool||activeTestSessionPool.length===0) return;
+    var q = activeTestSessionPool[globalPointerIndex];
+    var label = SECTION_LABELS[q.sectionKeyName] || q.sectionKeyName.toUpperCase();
+    var cfg = FIELD_CONFIG[selectedField];
+    document.getElementById('currentSubjectHeader').innerText = label;
+    document.getElementById('questionNumTracker').innerText = 'Question No: '+q.innerIndexValue+' of '+cfg.blueprint[q.sectionKeyName];
+    var qBox = document.getElementById('questionTextBox');
+    var html='';
+    if (q.passage) html += '<div class="passage-container"><div class="passage-label">Read the passage carefully:</div>'+q.passage+'</div>';
+    html += '<div>'+q.q+'</div>';
+    if (q.d) html += '<img class="question-diagram" src="'+q.d+'" alt="Diagram">';
+    qBox.innerHTML = html;
+    renderMathInElementSafe(qBox);
+    var cont = document.getElementById('optionsRadioGroup');
+    cont.innerHTML = '';
+    for (var idx=0; idx<q.a.length; idx++) {
+        var row = document.createElement('div');
+        row.className = 'option-row-item'+(q.chosenIndexValue===idx?' selected':'');
+        row.setAttribute('data-opt-index', idx);
+        var span = document.createElement('span');
+        span.className = 'option-text';
+        span.innerHTML = q.a[idx];
+        row.appendChild(span);
+        cont.appendChild(row);
+    }
+    renderMathInElementSafe(cont);
+    var rows = cont.querySelectorAll('.option-row-item');
+    for (var r=0; r<rows.length; r++) {
+        rows[r].addEventListener('click', function(){
+            q.chosenIndexValue = parseInt(this.getAttribute('data-opt-index'));
+            refreshWorkspace();
+        });
+    }
+    var navBtns = document.querySelectorAll('.nav-square-btn');
+    for (var n=0; n<navBtns.length; n++) {
+        navBtns[n].classList.remove('active-focus');
+        if (parseInt(navBtns[n].getAttribute('data-sid'),10)===globalPointerIndex) navBtns[n].classList.add('active-focus');
+    }
+}
+
+function generateNavMatrix() {
+    var grid = document.getElementById('navButtonMatrixGrid');
+    grid.innerHTML = '';
+    if (!activeTestSessionPool.length) return;
+    var cfg = FIELD_CONFIG[selectedField];
+    var keys = Object.keys(cfg.blueprint);
+    for (var k=0; k<keys.length; k++) {
+        var sec=keys[k], label=SECTION_LABELS[sec]||sec.toUpperCase();
+        var sq = activeTestSessionPool.filter(function(i){return i.sectionKeyName===sec;});
+        if (!sq.length) continue;
+        var cols = Math.min(cfg.blueprint[sec],20);
+        var html = '<div class="nav-section-label"><span>'+label+'</span></div>';
+        html += '<div class="nav-sub-grid" style="grid-template-columns:repeat('+cols+',1fr);">';
+        for (var j=0; j<sq.length; j++) {
+            var gIdx = activeTestSessionPool.indexOf(sq[j]);
+            var cls = 'nav-square-btn';
+            if (sq[j].isSavedPermanently) cls+=' filled';
+            if (sq[j].isFlagged) cls+=' flagged-review';
+            if (gIdx===globalPointerIndex) cls+=' active-focus';
+            html += '<div class="'+cls+'" data-sid="'+gIdx+'" onclick="navigateTo('+gIdx+')">'+sq[j].innerIndexValue+'</div>';
+        }
+        html += '</div>';
+        grid.innerHTML += html;
+    }
+}
+
+function navigateTo(gIdx) {
+    if (gIdx>=0 && gIdx<activeTestSessionPool.length) {
+        globalPointerIndex = gIdx;
+        refreshWorkspace();
+        generateNavMatrix();
+    }
+}
+
+function performJump() {
+    var v = parseInt(document.getElementById('jumpInput').value,10);
+    if (isNaN(v) || !activeTestSessionPool.length) return;
+    var cur = activeTestSessionPool[globalPointerIndex];
+    var sec = cur.sectionKeyName;
+    for (var i=0; i<activeTestSessionPool.length; i++) {
+        if (activeTestSessionPool[i].sectionKeyName===sec && activeTestSessionPool[i].innerIndexValue===v) {
+            navigateTo(i); return;
+        }
+    }
+    alert('Question '+v+' not found in this section.');
+}
+
+function jumpToNextSection() {
+    var cur = activeTestSessionPool[globalPointerIndex];
+    var sec = cur.sectionKeyName;
+    for (var i=globalPointerIndex+1; i<activeTestSessionPool.length; i++) {
+        if (activeTestSessionPool[i].sectionKeyName!==sec) { navigateTo(i); return; }
+    }
+}
+function jumpToPrevSection() {
+    var cur = activeTestSessionPool[globalPointerIndex];
+    var sec = cur.sectionKeyName;
+    var found=-1, prevSec=null;
+    for (var i=0; i<globalPointerIndex; i++) {
+        if (activeTestSessionPool[i].sectionKeyName!==sec) {
+            if (prevSec!==activeTestSessionPool[i].sectionKeyName) {
+                prevSec = activeTestSessionPool[i].sectionKeyName;
+                found = i;
+            }
+        }
+    }
+    if (found>=0) navigateTo(found);
+}
+
+function showHelp() {
+    alert('NAVIGATION HELP\n\n• Save: Save your answer\n• Review: Flag question for review\n• Next/Prev: Move between questions\n• Next Sec/Prev Sec: Jump between sections\n• First/Last: Go to first/last question\n• Jump to: Type number and click Go');
+}
+
+function saveAnswerState() {
+    var q = activeTestSessionPool[globalPointerIndex];
+    if (q.chosenIndexValue!==null) q.isSavedPermanently = true;
+    generateNavMatrix();
+    shiftActiveIndex(1);
+}
+
+function flagQuestionToggle() {
+    activeTestSessionPool[globalPointerIndex].isFlagged = !activeTestSessionPool[globalPointerIndex].isFlagged;
+    generateNavMatrix();
+}
+
+function shiftActiveIndex(step) {
+    var t = globalPointerIndex+step;
+    if (t>=0 && t<activeTestSessionPool.length) {
+        globalPointerIndex = t;
+        refreshWorkspace();
+        generateNavMatrix();
+    }
+}
+
+function triggerSubmitConfirmation() {
+    if (confirm('Submit your test?')) compileExamResults();
+}
+
+function compileExamResults() {
+    if (trackingIntervalEngine) clearInterval(trackingIntervalEngine);
+    var score=0, attempted=0;
+    var cfg = FIELD_CONFIG[selectedField];
+    var stats={}, logs={};
+    var keys = Object.keys(cfg.blueprint);
+    for (var k=0; k<keys.length; k++) { stats[keys[k]]=0; logs[keys[k]]=''; }
+    allReviewData = [];
+
+    for (var i=0; i<activeTestSessionPool.length; i++) {
+        var item = activeTestSessionPool[i];
+        var correct = item.chosenIndexValue!==null && item.chosenIndexValue===item.c;
+        var was = item.chosenIndexValue!==null;
+        if (was) attempted++;
+        if (correct) { score++; stats[item.sectionKeyName]++; }
+
+        var chosen = was ? item.a[item.chosenIndexValue] : 'Unattempted';
+        var right = item.a[item.c];
+        var exp = item.e || 'No explanation.';
+        var status = correct ? 'correct' : (was?'wrong':'unattempted');
+        var secL = (SECTION_LABELS[item.sectionKeyName]||item.sectionKeyName).toUpperCase();
+        var box='';
+        if (correct) {
+            box = '<div class="review-box box-correct" data-status="correct"><p><strong>Q'+item.innerIndexValue+' ('+secL+'):</strong> '+item.q+'</p><p style="color:#27AE60;font-weight:700;margin-top:5px;">✓ Correct</p></div>';
+        } else {
+            box = '<div class="review-box" data-status="'+status+'"><p><strong>Q'+item.innerIndexValue+' ('+secL+'):</strong> '+item.q+'</p><p style="color:#C0392B;font-weight:600;margin-top:5px;">Your Answer: '+chosen+'</p><p style="color:#27AE60;font-weight:600;">Correct Answer: '+right+'</p><p style="color:#555;margin-top:6px;font-style:italic;background:#F4F7FA;padding:8px;border-left:3px solid #5B8DC9;border-radius:4px;font-size:11.5px;"><strong>Explanation:</strong> '+exp+'</p></div>';
+        }
+        allReviewData.push({html:box, status:status});
+        logs[item.sectionKeyName] += box;
+    }
+
+    document.getElementById('totalScoreTarget').innerText = score+' / '+cfg.totalMCQs;
+    var pct = score/cfg.totalMCQs*100;
+    var gt='', gc='';
+    if (pct>=80) {gt='Excellent Performance'; gc='grade-excellent';}
+    else if (pct>=60) {gt='Good Performance'; gc='grade-good';}
+    else if (pct>=40) {gt='Average Performance'; gc='grade-average';}
+    else {gt='Needs Improvement'; gc='grade-poor';}
+    document.getElementById('resultGradeBadge').innerHTML = '<div class="result-grade-badge '+gc+'">'+gt+'</div>';
+
+    var wrong = attempted-score, unatt = cfg.totalMCQs-attempted;
+    var sg='';
+    sg += '<div class="result-stat-card"><div class="stat-value" style="color:#27AE60;">'+score+'</div><div class="stat-label">Correct</div></div>';
+    sg += '<div class="result-stat-card"><div class="stat-value" style="color:#E74C3C;">'+wrong+'</div><div class="stat-label">Wrong</div></div>';
+    sg += '<div class="result-stat-card"><div class="stat-value" style="color:#7F8C8D;">'+unatt+'</div><div class="stat-label">Unattempted</div></div>';
+    sg += '<div class="result-stat-card"><div class="stat-value" style="color:#5B8DC9;">'+pct.toFixed(1)+'%</div><div class="stat-label">Percentage</div></div>';
+    document.getElementById('resultStatsGrid').innerHTML = sg;
+
+    var bd='<strong>Subject Breakdown ('+cfg.label+'):</strong><br>';
+    for (var k=0; k<keys.length; k++) {
+        var sec=keys[k];
+        var sp = (stats[sec]/cfg.blueprint[sec]*100).toFixed(1);
+        bd += (SECTION_LABELS[sec]||sec.toUpperCase())+': <strong>'+stats[sec]+'/'+cfg.blueprint[sec]+'</strong> ('+sp+'%)<br>';
+    }
+    document.getElementById('subjectScoreBreakdownBox').innerHTML = bd;
+
+    var rh='';
+    for (var k=0; k<keys.length; k++) {
+        var sec=keys[k];
+        rh += '<div class="review-header">'+(SECTION_LABELS[sec]||sec.toUpperCase())+' ('+stats[sec]+'/'+cfg.blueprint[sec]+')</div>'+(logs[sec]||'<p style="padding:8px;color:#888;">No questions.</p>');
+    }
+    document.getElementById('wrongQuestionsReviewPanel').innerHTML = rh;
+    renderMathInElementSafe(document.getElementById('wrongQuestionsReviewPanel'));
+    renderMathInElementSafe(document.getElementById('subjectScoreBreakdownBox'));
+
+    document.getElementById('reportCardModalOverlay').style.display='flex';
+    if (pct>=60) launchConfetti();
+}
+
+function filterReview(type, btn) {
+    var btns = document.querySelectorAll('.review-filter-btn');
+    for (var i=0; i<btns.length; i++) btns[i].classList.remove('active');
+    btn.classList.add('active');
+    var boxes = document.getElementById('wrongQuestionsReviewPanel').querySelectorAll('.review-box');
+    for (var i=0; i<boxes.length; i++) {
+        var st = boxes[i].getAttribute('data-status');
+        boxes[i].style.display = (type==='all'||st===type) ? '' : 'none';
+    }
+}
+</script>
+<script>
+document.addEventListener('contextmenu', function(e){e.preventDefault();});
+document.addEventListener('keydown', function(e){
+    if (e.keyCode===123 || (e.ctrlKey&&e.shiftKey&&e.keyCode===73) || (e.ctrlKey&&e.shiftKey&&e.keyCode===74) || (e.ctrlKey&&e.keyCode===85)) {
+        e.preventDefault(); return false;
+    }
+});
+</script>
+</body>
+</html>
